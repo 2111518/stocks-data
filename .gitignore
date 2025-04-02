@@ -1,0 +1,4 @@
+*.DS_Store
+*.txt
+stock-close.csv
+stock-close-latest.csv
