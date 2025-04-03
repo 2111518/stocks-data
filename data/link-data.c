@@ -29,33 +29,30 @@ int main() {
     }
 	char *token = NULL;
     // 讀取檔案並建立鏈結串列
-    while (fgets(buff, NL, fp) != NULL) {
-		/*if(strcmp(buff, "Symbol")){
-			continue;
-		}*/
+	while (fgets(buff, NL, fp) != NULL) {
 		if(num==0){
 			num++;
 			continue;
 		}
-        temp = (fda *)malloc(sizeof(fda)); // 動態分配記憶體
-        if (temp == NULL) {
-            printf("記憶體分配失敗\n");
-            return 1;
-        }
+		temp = (fda *)malloc(sizeof(fda)); // 動態分配記憶體
+		if (temp == NULL) {
+			printf("記憶體分配失敗\n");
+			return 1;
+		}
 		
-        // 使用 strtok() 解析 CSV
-        token = strtok(buff, DELIM);
-        if (token != NULL) {
-            strncpy(temp->symbol, token, sizeof(temp->symbol) - 1);
+		// 使用 strtok() 解析 CSV
+		token = strtok(buff, DELIM);
+			if (token != NULL) {
+			strncpy(temp->symbol, token, sizeof(temp->symbol) - 1);
 			for(int i=0;temp->symbol[i] != '\0';i++){
 				if(temp->symbol[i] == '.'){
 					temp->symbol[i] = '-';
 				}
 			}
             temp->symbol[sizeof(temp->symbol) - 1] = '\0'; // 確保字串結尾
-        } else {
-            strcpy(temp->symbol, "N/A"); // 若找不到則填入 "N/A"
-        }
+		} else {
+			strcpy(temp->symbol, "N/A"); // 若找不到則填入 "N/A"
+		}
 
         /*token = strtok(NULL, DELIM);
         if (token != NULL) {
@@ -65,18 +62,18 @@ int main() {
             strcpy(temp->security, "N/A");
         }*/
 
-        temp->next = NULL;
+		temp->next = NULL;
 
-        if (head == NULL) {// 第一個節點
-            head = temp;
+		if (head == NULL) {// 第一個節點
+			head = temp;
 			tail = head;
-        } else {
-            tail->next = temp; // 新節點加入尾端
-            tail = temp;
-        }
+		} else {
+			tail->next = temp; // 新節點加入尾端
+			tail = temp;
+		}
 
-        num++;
-    }
+		num++;
+	}
     fclose(fp);
 
     // 輸出解析後的 Symbol 和 Security
