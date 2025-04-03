@@ -7,8 +7,8 @@
 
 // 定義鏈結串列節點
 struct fdata {
-    char symbol[20];   // 存放 Symbol 欄位
-    //char security[100]; // 存放 Security 欄位
+    char symbol[10];   // 存放 Symbol 欄位
+    //char security[45]; // 存放 Security 欄位
     struct fdata *next;
 };
 
@@ -34,6 +34,7 @@ int main() {
 			num++;
 			continue;
 		}
+        
 		temp = (fda *)malloc(sizeof(fda)); // 動態分配記憶體
 		if (temp == NULL) {
 			printf("記憶體分配失敗\n");
@@ -94,4 +95,3 @@ int main() {
 
     return 0;
 }
-

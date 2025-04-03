@@ -48,18 +48,42 @@ int main() {
         num++;
     }
     fclose(fp);
-
+	
+	//找出每一個部分最長的字串
+    int maxz[8], count, bef;
+	for(int i=0;i<8;i++){
+		maxz[i]=0;
+	}
+	
     // 找出最大有效字串長度
     int maxn = 0;
     temp = head;
     while (temp != NULL) {
+		count=0;
+		bef=0;
         int len = strlen(temp->line);
         if (len > maxn) {
             maxn = len;
         }
+		for(int i=0;i<170;i++){
+			if((temp->line[i] == ',' || temp->line[i] == '\0')&& (i-bef)>maxz[count]){
+				maxz[count]=i-bef;
+				count++;
+				bef=i;
+			}else if(temp->line[i] == ',' || temp->line[i] == '\0'){
+				count++;
+				bef=i;
+			}
+			if(temp->line[i] == '\0'){
+				break;
+			}
+		}
         temp = temp->next;
     }
-
+	for(int i=0;i<8;i++){
+		printf("%d ",maxz[i]);
+	}
+	printf("\n");
     printf("資料行數: %d\n", num);
     printf("最大有效字串長度: %d\n", maxn);
 
