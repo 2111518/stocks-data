@@ -76,22 +76,23 @@ int main() {
 		num++;
 	}
     fclose(fp);
-
+    fp = NULL;
+    fp = fopen("out.txt", "w+");
     // 輸出解析後的 Symbol 和 Security
     //printf("解析後的 Symbol 和 Security:\n");
     temp = head;
     while (temp != NULL) {
         //printf("%s, %s\n", temp->symbol, temp->security);
-        printf("%s\n", temp->symbol);
+        fprintf(fp, "%s\n", temp->symbol);
 		temp = temp->next;
     }
-
+    
     // 釋放記憶體
     while (head != NULL) {
         temp = head;
         head = head->next;
         free(temp);
     }
-
+    tail = NULL;
     return 0;
 }

@@ -1,5 +1,5 @@
 *.DS_Store
 *.txt
+a.out
 stock-close.csv
 stock-close-latest.csv
-picture
