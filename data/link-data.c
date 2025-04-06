@@ -7,8 +7,8 @@
 
 // 定義鏈結串列節點
 struct fdata {
-    char symbol[10];   // 存放 Symbol 欄位
-    //char security[45]; // 存放 Security 欄位
+    char symbol[8];   // 存放 Symbol 欄位
+    char security[40]; // 存放 Security 欄位
     struct fdata *next;
 };
 
@@ -55,13 +55,13 @@ int main() {
 			strcpy(temp->symbol, "N/A"); // 若找不到則填入 "N/A"
 		}
 
-        /*token = strtok(NULL, DELIM);
+        token = strtok(NULL, DELIM);
         if (token != NULL) {
             strncpy(temp->security, token, sizeof(temp->security) - 1);
             temp->security[sizeof(temp->security) - 1] = '\0';
         } else {
             strcpy(temp->security, "N/A");
-        }*/
+        }
 
 		temp->next = NULL;
 
@@ -76,14 +76,15 @@ int main() {
 		num++;
 	}
     fclose(fp);
+    
     fp = NULL;
     fp = fopen("out.txt", "w+");
     // 輸出解析後的 Symbol 和 Security
     //printf("解析後的 Symbol 和 Security:\n");
     temp = head;
     while (temp != NULL) {
-        //printf("%s, %s\n", temp->symbol, temp->security);
-        fprintf(fp, "%s\n", temp->symbol);
+        fprintf(fp, "%s %s\n", temp->symbol, temp->security);
+        //fprintf(fp, "%s\n", temp->symbol);
 		temp = temp->next;
     }
     
