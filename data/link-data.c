@@ -83,8 +83,8 @@ int main() {
     //printf("解析後的 Symbol 和 Security:\n");
     temp = head;
     while (temp != NULL) {
-        fprintf(fp, "%s %s\n", temp->symbol, temp->security);
-        //fprintf(fp, "%s\n", temp->symbol);
+        //fprintf(fp, "%s %s\n", temp->symbol, temp->security);
+        fprintf(fp, "%s\n", temp->symbol);
 		temp = temp->next;
     }
     
