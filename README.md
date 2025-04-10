@@ -5,7 +5,7 @@
 以及個別資料的最長字元數放入`test.txt`   
 - `sort.c` 會把 `out.txt` 的內容進行排序(根據字母)，  
 將結果放入`out-sort.txt`
-- `stock-period` 可以取得一段時間內標普500公司的收盤價  
+- `stock-period` 可以取得指定時間內標普500公司的收盤價  
 - `stock-latest` 可以取得最近一次的標普500公司的收盤價
 
 ### License
