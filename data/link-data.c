@@ -83,8 +83,9 @@ int main() {
     //printf("解析後的 Symbol 和 Security:\n");
     temp = head;
     while (temp != NULL) {
-        //fprintf(fp, "%s %s\n", temp->symbol, temp->security);
-        fprintf(fp, "%s\n", temp->symbol);
+        //印出股票代碼以及公司名稱
+        fprintf(fp, "%s %s\n", temp->symbol, temp->security);
+        //fprintf(fp, "%s\n", temp->symbol);
 		temp = temp->next;
     }
     

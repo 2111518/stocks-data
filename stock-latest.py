@@ -1,15 +1,15 @@
 import yfinance as yf
 import pandas as pd
-import os
+from pathlib import Path
 
-def get_tickers_and_names_from_file(filename):
-    """從檔案讀取股票代碼及對應公司名稱（以第一個空格分隔）"""
-    if not os.path.exists(filename):
-        print(f"❌ 檔案 '{filename}' 找不到，請確認檔案是否存在。")
+def get_tickers_and_names_from_file(filepath: Path) -> list[tuple[str, str]]:
+    """從檔案讀取股票代碼與公司名稱（以第一個空格分隔）"""
+    if not filepath.exists():
+        print(f"❌ 檔案 '{filepath}' 找不到，請確認檔案是否存在。")
         return []
 
     tickers_info = []
-    with open(filename, "r") as f:
+    with filepath.open("r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if line:
@@ -19,39 +19,40 @@ def get_tickers_and_names_from_file(filename):
                 tickers_info.append((ticker, name))
     return tickers_info
 
-# 讀取 out.txt 檔案
-filename = "./data/out.txt"
-tickers_info = get_tickers_and_names_from_file(filename)
+def fetch_latest_prices(tickers_info: list[tuple[str, str]]) -> pd.DataFrame:
+    """使用 yfinance 抓取股票最新收盤價"""
+    tickers = [t[0] for t in tickers_info]
+    name_lookup = dict(tickers_info)
+    stocks = yf.Tickers(" ".join(tickers))
 
-if not tickers_info:
-    print("❌ 沒有讀取到任何股票代碼，程式結束。")
-    exit()
+    results = []
+    for ticker in tickers:
+        try:
+            stock = stocks.tickers[ticker]
+            hist = stock.history(period="1d")
 
-tickers = [item[0] for item in tickers_info]
-ticker_name_dict = dict(tickers_info)
+            if not hist.empty:
+                price = hist["Close"].iloc[-1]
+                date = hist.index[-1].strftime("%Y-%m-%d")
+                results.append([ticker, name_lookup.get(ticker, ticker), price, date])
+            else:
+                print(f"⚠️ 無法獲取 {ticker} 的歷史數據。")
+        except Exception as e:
+            print(f"❌ 取得 {ticker} 的數據時發生錯誤: {e}")
+    return pd.DataFrame(results, columns=["Ticker", "Company Name", "Price", "Date"])
 
-# 使用 yfinance 批次抓取歷史價格（不使用 info）
-stocks = yf.Tickers(" ".join(tickers))
-stock_data = []
+def main():
+    filepath = Path("./data/out.txt")
+    tickers_info = get_tickers_and_names_from_file(filepath)
 
-for ticker in tickers:
-    try:
-        stock = stocks.tickers[ticker]
-        hist = stock.history(period="1d")
+    if not tickers_info:
+        print("❌ 沒有讀取到任何股票代碼，程式結束。")
+        return
 
-        if not hist.empty:
-            price = hist["Close"].iloc[-1]
-            date = hist.index[-1].strftime("%Y-%m-%d")
-            name = ticker_name_dict.get(ticker, ticker)
-            stock_data.append([ticker, name, price, date])
-        else:
-            print(f"⚠️ 無法獲取 {ticker} 的歷史數據。")
-    except Exception as e:
-        print(f"❌ 取得 {ticker} 的數據時發生錯誤: {e}")
+    df = fetch_latest_prices(tickers_info)
+    df.to_csv("stock-close-latest.csv", index=False)
+    print("📄 資料已儲存到 stock-close-latest.csv")
 
-# 輸出 CSV
-df = pd.DataFrame(stock_data, columns=["Ticker", "Company Name", "Price", "Date"])
-df.to_csv("stock-close-latest.csv", index=False)
-
-print("📄 資料已儲存到 stock-close-latest.csv")
+if __name__ == "__main__":
+    main()
 
