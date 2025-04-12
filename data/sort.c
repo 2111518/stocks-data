@@ -50,7 +50,7 @@ int main() {
     qsort(sym, count, sizeof(dt), compare);
 
     // 輸出排序後的結果
-    FILE *out_fp = fopen("out-sort.txt", "w+");
+    FILE *out_fp = fopen("sort.txt", "w+");
     if (out_fp == NULL) {
         perror("無法開啟 out-sort.txt");
         return 1;
@@ -61,7 +61,7 @@ int main() {
     }
     fclose(out_fp);
 
-    //printf("排序結果已寫入 out-sort.txt\n");
+    //printf("排序結果已寫入 sort.txt\n");
 
     return 0;
 }

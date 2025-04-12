@@ -9,6 +9,7 @@
 struct fdata {
     char symbol[8];   // 存放 Symbol 欄位
     char security[40]; // 存放 Security 欄位
+    char GICS_Sector[25];
     struct fdata *next;
 };
 
@@ -62,8 +63,10 @@ int main() {
         } else {
             strcpy(temp->security, "N/A");
         }
-
-		temp->next = NULL;
+        
+        //TODO: 讀取 GICS Sector
+		
+        temp->next = NULL;
 
 		if (head == NULL) {// 第一個節點
 			head = temp;
