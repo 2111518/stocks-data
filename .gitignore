@@ -3,5 +3,4 @@ info.txt
 out.txt
 sort.txt
 a.out
-stock-close.csv
-stock-close-latest.csv
+*stock-close*.csv

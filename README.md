@@ -7,7 +7,8 @@
 將結果放入`sort.txt`
 - `stock-period.py` 可以取得指定時間內標普500公司的收盤價  
 - `stock-latest.py` 可以取得最近一次的標普500公司的收盤價
-- `scrape.py` 請參閱third_party.md
+- `stock-specify.py` 可以取得指定日期的標普500公司的收盤價
+- `scrape.py` 請參閱third-party.md
 ### License
 AGPL v3
 
