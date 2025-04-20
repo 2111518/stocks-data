@@ -121,8 +121,8 @@ int main() {
     bool found = false;
     for (int i = 0; i < count; i++) {
         if (is_gics_in_list(sym[i].gics, gics_list, gics_count)) {
-            //fprintf(out_fp, "%s %s %s\n", sym[i].symbol, sym[i].name, sym[i].gics);
-            fprintf(out_fp, "%s %s\n", sym[i].symbol, sym[i].name);
+            fprintf(out_fp, "%s %s %s\n", sym[i].symbol, sym[i].name, sym[i].gics);
+            //fprintf(out_fp, "%s %s\n", sym[i].symbol, sym[i].name);
             found=true;
         }
     }

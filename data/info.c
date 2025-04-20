@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define NL 170  // 最大字串長度
 #define MAX_FIELDS 20  // 假設最多 20 個欄位
@@ -71,8 +72,12 @@ int main() {
         // 計算各欄位最大長度
         int count = 0, start = 0;
         int field_len = 0;
+        bool quote=false;
         for (int i = 0; temp->line[i] != '\0'; i++) {
-            if (temp->line[i] == ',' || temp->line[i + 1] == '\0') {
+            if(temp->line[i]=='\"'){
+                quote = !quote;
+            }
+            if ((temp->line[i] == ',' && !quote)|| temp->line[i + 1] == '\0') {
                 field_len = (temp->line[i + 1] == '\0') ? (i - start + 1) : (i - start);
                 if (field_len > maxz[count]) {
                     maxz[count] = field_len;
