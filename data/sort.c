@@ -68,7 +68,7 @@ int main() {
     }
 
     for (int i = 0; i < count; i++) {
-        fprintf(out_fp, "%s %s %s\n", sym[i].symbol, sym[i].name, sym[i].gics);
+        fprintf(out_fp, "%s$%s$%s\n", sym[i].symbol, sym[i].name, sym[i].gics);
     }
     fclose(out_fp);
 
