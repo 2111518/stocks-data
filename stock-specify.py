@@ -55,7 +55,7 @@ def fetch_prices_by_date(tickers_info: list[tuple[str, str, str]], target_date: 
     return pd.DataFrame(results, columns=["Ticker", "Company Name", "GICS", "Price", "Date"])
 
 def main():
-    filepath = Path("./data/sort.txt")
+    filepath = Path("./data/gics-sort.txt")
     tickers_info = get_tickers_info_from_file(filepath)
 
     if not tickers_info:

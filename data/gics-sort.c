@@ -89,8 +89,8 @@ int main() {
     char input[100];
     char gics_list[50][25]; // 最多 50 個 GICS
     int gics_count = 0;
-
-    printf("請一行一行輸入 GICS 類別（輸入 exit 結束）：\n");
+    fp=fopen("sector.txt", "r");
+    /*printf("請一行一行輸入 GICS 類別（輸入 exit 結束）：\n");
     while (1) {
         printf("> ");
         if (fgets(input, sizeof(input), stdin) == NULL) break;
@@ -108,10 +108,22 @@ int main() {
         strncpy(gics_list[gics_count], temp, sizeof(gics_list[gics_count]));
         gics_list[gics_count][sizeof(gics_list[gics_count]) - 1] = '\0';
         gics_count++;
+    }*/
+    if (fp == NULL) {
+        perror("無法開啟 sector.txt");
+        return 1;
     }
 
+    while (fgets(input, sizeof(input), fp) != NULL && gics_count < 50) {
+        input[strcspn(input, "\n")] = '\0'; // 去除換行符號
+        to_lower_str(input);
+        strncpy(gics_list[gics_count], input, sizeof(gics_list[gics_count]));
+        gics_list[gics_count][sizeof(gics_list[gics_count]) - 1] = '\0';
+        gics_count++;
+    }
+    fclose(fp);
     // 開啟輸出檔案
-    FILE *out_fp = fopen("result.txt", "w+");
+    FILE *out_fp = fopen("gics-sort.txt", "w+");
     if (out_fp == NULL) {
         perror("無法開啟 result.txt");
         return 1;
@@ -121,7 +133,7 @@ int main() {
     bool found = false;
     for (int i = 0; i < count; i++) {
         if (is_gics_in_list(sym[i].gics, gics_list, gics_count)) {
-            fprintf(out_fp, "%s %s %s\n", sym[i].symbol, sym[i].name, sym[i].gics);
+            fprintf(out_fp, "%s$%s$%s\n", sym[i].symbol, sym[i].name, sym[i].gics);
             //fprintf(out_fp, "%s %s\n", sym[i].symbol, sym[i].name);
             found=true;
         }
