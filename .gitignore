@@ -6,3 +6,14 @@ sector.txt
 gics-sort.txt
 a.out
 *stock-close*.csv
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
