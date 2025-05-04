@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 
 def get_tickers_info_from_file(filepath: Path) -> list[tuple[str, str, str]]:
-    """從檔案讀取股票代碼、公司名稱與 GICS（以逗號分隔）"""
+    """從檔案讀取股票代碼、公司名稱與 GICS"""
     if not filepath.exists():
         print(f"❌ 檔案 '{filepath}' 找不到，請確認檔案是否存在。")
         return []
@@ -14,7 +14,7 @@ def get_tickers_info_from_file(filepath: Path) -> list[tuple[str, str, str]]:
         for line in f:
             line = line.strip()
             if line:
-                parts = line.split("$", 2)
+                parts = line.split("@", 2)
                 if len(parts) == 3:
                     ticker = parts[0].strip().upper()
                     name = parts[1].strip()
