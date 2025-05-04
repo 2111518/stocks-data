@@ -19,7 +19,7 @@ def process_csv(filename, output_file, sort=False, filter_by_sector=False, secto
         reader = csv.reader(csvfile, quotechar='"')
         headers = next(reader)  # 跳過標題列
         for row in reader:
-            trimmed = [field.replace('.', '-') for field in row[:3]] # Symbol, Security, GICS Sector
+            trimmed = [field.replace('.', '-') for field in row[:3]]  # Symbol, Security, GICS Sector
             if filter_by_sector:
                 if trimmed[2] not in allowed_sectors:
                     continue

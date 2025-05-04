@@ -1,13 +1,13 @@
 import yfinance as yf
 import numpy as np
 from numba import njit
+from data import load_tickers
 
 # 模擬用除數（實際 S&P 的除數由 S&P 公司維護，這裡只是舉例）
 SIMULATED_DIVISOR = 10_000_000_000
 
 # 讀取股票代碼
-with open('out.txt', 'r') as f:
-    tickers = [line.strip() for line in f if line.strip()]
+tickers = load_tickers("constituents.csv")
 
 # 取得市值資料（用 yfinance 批次抓取）
 data = yf.Tickers(' '.join(tickers))
