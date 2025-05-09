@@ -6,7 +6,7 @@ sector.txt
 gics-sort.txt
 a.out
 *stock-close*.csv
-
+archive
 # Python-generated files
 __pycache__/
 *.py[oc]
