@@ -4,7 +4,7 @@
 - `scrape.py` 請參閱third-party.md
 - `data.py` 處理csv檔案中的資料
 - `sp-simulate.py` 模擬計算標普500指數
-- `less-dada.py` 取得 constituents.csv 的股票代碼，需搭配其他程式使用
+- `less-data.py` 取得 constituents.csv 的股票代碼，需搭配其他程式使用
 
 ### License
 AGPL v3
@@ -15,6 +15,14 @@ AGPL v3
 
 [ChatGPT](https://chatgpt.com/) @OpenAI  
 > 註：部分程式碼是由 ChatGPT 所產生
+
+### 第三方程式碼與授權聲明
+
+本專案使用了以下第三方開源程式碼，特此說明來源與授權內容：
+- `scrape.py`
+- 來源專案：[datasets/s-and-p-500-companies](https://github.com/datasets/s-and-p-500-companies)
+- 原始檔案連結：[scripts/scrape.py](https://github.com/datasets/s-and-p-500-companies/blob/main/scripts/scrape.py)
+- 授權方式：MIT License
 
 ### Archive
 archive.tar.gz
