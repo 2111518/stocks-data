@@ -4,9 +4,10 @@ out.txt
 sort.txt
 sector.txt
 gics-sort.txt
-a.out
 *stock-close*.csv
 archive
+*stock-history*
+
 # Python-generated files
 __pycache__/
 *.py[oc]
