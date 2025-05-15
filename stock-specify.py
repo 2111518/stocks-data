@@ -4,24 +4,21 @@ from pathlib import Path
 from datetime import datetime, timedelta
 
 def get_tickers_info_from_file(filepath: Path) -> list[tuple[str, str, str]]:
-    """從檔案讀取股票代碼、公司名稱與 GICS"""
+    """從 constituents.csv 讀取 Symbol, Security, GICS Sector，處理特殊符號與格式"""
     if not filepath.exists():
         print(f"❌ 檔案 '{filepath}' 找不到，請確認檔案是否存在。")
         return []
 
-    tickers_info = []
-    with filepath.open("r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                parts = line.split("@", 2)
-                if len(parts) == 3:
-                    ticker = parts[0].strip().upper()
-                    name = parts[1].strip()
-                    gics = parts[2].strip()
-                    tickers_info.append((ticker, name, gics))
-                else:
-                    print(f"⚠️ 格式錯誤，略過此行: {line}")
+    try:
+        df = pd.read_csv(filepath, usecols=["Symbol", "Security", "GICS Sector"])
+    except Exception as e:
+        print(f"❌ 讀取 CSV 檔時發生錯誤: {e}")
+        return []
+
+    # 處理 Symbol 中的 "." 改為 "-"
+    df["Symbol"] = df["Symbol"].str.replace(".", "-", regex=False)
+
+    tickers_info = list(df.itertuples(index=False, name=None))
     return tickers_info
 
 def fetch_prices_by_date(tickers_info: list[tuple[str, str, str]], target_date: str) -> pd.DataFrame:
@@ -55,7 +52,7 @@ def fetch_prices_by_date(tickers_info: list[tuple[str, str, str]], target_date: 
     return pd.DataFrame(results, columns=["Ticker", "Company Name", "GICS", "Price", "Date"])
 
 def main():
-    filepath = Path("./out.txt")
+    filepath = Path("./constituents.csv")
     tickers_info = get_tickers_info_from_file(filepath)
 
     if not tickers_info:

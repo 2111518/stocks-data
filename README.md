@@ -26,6 +26,7 @@ AGPL v3
 
 ### Archive
 archive.tar.gz
+- `sp-simulate` 模擬計算標普500指數
 - `stock-period.py` 可以取得指定時間內標普500公司的收盤價  
 - `stock-latest.py` 可以取得最近一次的標普500公司的收盤價
 - `link-data.c` 可以把股票代碼、公司名稱以及GICS放到 `out.txt` 中  
