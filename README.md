@@ -1,10 +1,9 @@
 ### Introduce
 - `constituents.csv` 包含標普500的公司  
 - `stock-specify.py` 可以取得指定日期的標普500公司的收盤價
-- `scrape.py` 請參閱third-party.md
+- `scrape.py` 請參閱下方說明
 - `data.py` 處理csv檔案中的資料
 - `sp-simulate.py` 模擬計算標普500指數
-- `less-data.py` 取得 constituents.csv 的股票代碼，需搭配其他程式使用
 
 ### License
 AGPL v3
@@ -26,6 +25,7 @@ AGPL v3
 
 ### Archive
 archive.tar.gz
+- `less-data.py` 取得 constituents.csv 的股票代碼，可以搭配 `sp-simulate.py` 或其他程式使用
 - `sp-simulate` 模擬計算標普500指數
 - `stock-period.py` 可以取得指定時間內標普500公司的收盤價  
 - `stock-latest.py` 可以取得最近一次的標普500公司的收盤價
