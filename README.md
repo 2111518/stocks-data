@@ -4,6 +4,7 @@
 - `scrape.py` 請參閱下方說明
 - `data.py` 處理csv檔案中的資料
 - `sp-simulate.py` 模擬計算標普500指數
+- `specify-reference` 讀取指定日期的股票
 
 ### License
 AGPL v3

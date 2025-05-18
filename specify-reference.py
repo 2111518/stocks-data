@@ -15,7 +15,7 @@ def get_tickers_info_from_file(filepath: Path) -> list[tuple[str, str, str]]:
         print(f"❌ 讀取 CSV 檔時發生錯誤: {e}")
         return []
 
-    # 處理 Symbol 中的 "." 改為 "-"
+    # 將 Symbol 中的 "." 替換成 "-"
     df["Symbol"] = df["Symbol"].str.replace(".", "-", regex=False)
 
     tickers_info = list(df.itertuples(index=False, name=None))
@@ -36,10 +36,14 @@ def fetch_prices_by_date(tickers_info: list[tuple[str, str, str]], target_date: 
     results = []
     for ticker in tickers:
         try:
-            stock = stocks.tickers[ticker]
+            stock = stocks.tickers.get(ticker)
+            if stock is None:
+                print(f"⚠️ 找不到 {ticker} 的 yfinance 物件。")
+                continue
+
             hist = stock.history(start=target_date, end=(date_obj + timedelta(days=1)).strftime("%Y-%m-%d"))
 
-            if not hist.empty:
+            if not hist.empty and "Close" in hist.columns:
                 price = hist["Close"].iloc[0]
                 date = hist.index[0].strftime("%Y-%m-%d")
                 name, gics = info_lookup.get(ticker, (ticker, ""))
@@ -65,7 +69,8 @@ def main():
 
     df = fetch_prices_by_date(tickers_info, target_date)
     if not df.empty:
-        output_file = f"stock-close-{target_date}.csv"
+        timestamp = datetime.now().strftime("%H%M%S")
+        output_file = f"stock-close-{target_date}-{timestamp}.csv"
         df.to_csv(output_file, index=False)
         print(f"📄 資料已儲存到 {output_file}")
     else:
