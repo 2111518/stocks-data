@@ -2,9 +2,7 @@
 - `constituents.csv` 包含標普500的公司  
 - `stock-specify.py` 可以取得指定日期的標普500公司的收盤價
 - `scrape.py` 請參閱下方說明
-- `data.py` 處理csv檔案中的資料
-- `specify-reference.py` 讀取指定日期的股票
-
+- `reference-period.py` 讀取一段時間區間內的資料
 ### License
 AGPL v3
 

@@ -1,10 +1,9 @@
 import yfinance as yf
 import pandas as pd
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 
 def get_tickers_info_from_file(filepath: Path) -> list[tuple[str, str, str]]:
-    """從 constituents.csv 讀取股票代碼、公司名稱與 GICS"""
     if not filepath.exists():
         print(f"X 檔案 '{filepath}' 找不到，請確認檔案是否存在。")
         return []
@@ -22,45 +21,48 @@ def get_tickers_info_from_file(filepath: Path) -> list[tuple[str, str, str]]:
 
     tickers_info = []
     for _, row in df.iterrows():
-        ticker = str(row["Symbol"]).strip().upper().replace(".", "-")  # 處理如 BRK.B -> BRK-B
+        ticker = str(row["Symbol"]).strip().upper().replace(".", "-")
         name = str(row["Security"]).strip()
         gics = str(row["GICS Sector"]).strip()
         tickers_info.append((ticker, name, gics))
 
-    return tickers_info
+    return sorted(tickers_info, key=lambda x: (x[2], x[0]))  # 先以 GICS，再以 Symbol 排序
 
-def fetch_prices_by_date(tickers_info: list[tuple[str, str, str]], target_date: str) -> pd.DataFrame:
-    """使用 yfinance 抓取指定日期的股票收盤價，並依 GICS 與 Ticker 排序"""
+def fetch_prices_by_range(tickers_info: list[tuple[str, str, str]], start_date: str, end_date: str) -> pd.DataFrame:
     try:
-        date_obj = datetime.strptime(target_date, "%Y-%m-%d")
+        start_obj = datetime.strptime(start_date, "%Y-%m-%d")
+        end_obj = datetime.strptime(end_date, "%Y-%m-%d")
     except ValueError:
-        print(f"X 日期格式錯誤，請使用 YYYY-MM-DD。收到: {target_date}")
+        print(f"X 日期格式錯誤，請使用 YYYY-MM-DD")
         return pd.DataFrame()
 
     tickers = [t[0] for t in tickers_info]
     info_lookup = {t[0]: (t[1], t[2]) for t in tickers_info}  # ticker -> (name, gics)
     stocks = yf.Tickers(" ".join(tickers))
 
-    results = []
+    all_results = []
+
     for ticker in tickers:
         try:
             stock = stocks.tickers[ticker]
-            hist = stock.history(start=target_date, end=(date_obj + timedelta(days=1)).strftime("%Y-%m-%d"))
-
+            hist = stock.history(start=start_date, end=end_date)
             if not hist.empty:
-                price = hist["Close"].iloc[0]
-                date = hist.index[0].strftime("%Y-%m-%d")
                 name, gics = info_lookup.get(ticker, (ticker, ""))
-                results.append([ticker, name, gics, price, date])
+                for date, row in hist.iterrows():
+                    all_results.append([
+                        ticker,
+                        name,
+                        gics,
+                        date.strftime("%Y-%m-%d"),
+                        row["Close"]
+                    ])
+            else:
+                print(f"! {ticker} 在區間 {start_date} 到 {end_date} 沒有資料")
         except Exception as e:
-            print(f"X 取得 {ticker} 的數據時發生錯誤: {e}")
+            print(f"X 取得 {ticker} 的資料時發生錯誤: {e}")
 
-    df = pd.DataFrame(results, columns=["Ticker", "Company Name", "GICS", "Price", "Date"])
-
-    # 排序：先 GICS，再 Ticker
-    df.sort_values(by=["GICS", "Ticker"], inplace=True)
-
-    return df
+    df = pd.DataFrame(all_results, columns=["Ticker", "Company Name", "GICS", "Date", "Close"])
+    return df.sort_values(by=["GICS", "Ticker", "Date"])
 
 def main():
     filepath = Path("./constituents.csv")
@@ -70,17 +72,17 @@ def main():
         print("X 沒有讀取到任何股票資訊，程式結束")
         return
 
-    target_date = input("請輸入欲查詢的日期 (YYYY-MM-DD)，直接 Enter 則使用今天: ").strip()
-    if not target_date:
-        target_date = datetime.today().strftime("%Y-%m-%d")
+    start_date = input("請輸入起始日期 (YYYY-MM-DD): ").strip()
+    end_date = input("請輸入結束日期 (YYYY-MM-DD): ").strip()
 
-    df = fetch_prices_by_date(tickers_info, target_date)
+    df = fetch_prices_by_range(tickers_info, start_date, end_date)
+
     if not df.empty:
-        output_file = f"stock-close-{target_date}.csv"
+        output_file = f"stock-range-{start_date}_to_{end_date}.csv"
         df.to_csv(output_file, index=False)
         print(f"📄 資料已儲存到 {output_file}")
     else:
-        print("! 沒有任何收盤資料可供儲存(可能是假日)")
+        print("! 沒有任何收盤資料可供儲存(可能是假日或代碼錯誤)")
 
 if __name__ == "__main__":
     main()
