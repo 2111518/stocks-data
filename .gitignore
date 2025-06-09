@@ -8,6 +8,8 @@ gics-sort.txt
 archive
 *stock-history*
 *stock-range*.csv
+*-close-*.csv
+
 # Python-generated files
 __pycache__/
 *.py[oc]

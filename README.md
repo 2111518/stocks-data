@@ -3,6 +3,8 @@
 - `stock-specify.py` 可以取得指定日期的標普500公司的收盤價
 - `scrape.py` 請參閱下方說明
 - `reference-period.py` 讀取一段時間區間內的資料
+- `order-stock.py` 讀取指定股票在指定時間內的資料
+
 ### License
 AGPL v3
 
