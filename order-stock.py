@@ -47,10 +47,11 @@ def main():
         "股價": hist["Close"].values,
         "日期": hist.index.strftime("%Y-%m-%d")
     })
-
-    filename = f"{ticker_input}-close-{start_date_input}-{end_date_input}.csv"
+    code = ticker_input.replace(".", "-")
+    filename = f"{code}-close-{start_date_input}-{end_date_input}.csv"
     df.to_csv(filename, index=False)
-    print(f"V 資料已保存至 {filename}")
+    print(f"V 資料已保存")
+    # print(f"V 資料已保存至 {filename}")
 
 if __name__ == "__main__":
     main()
