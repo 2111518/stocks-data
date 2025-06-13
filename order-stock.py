@@ -15,6 +15,7 @@ def main():
     raw_input = input("請輸入股票代碼: ").strip()
     ticker_input = normalize_ticker(raw_input)
     price = "Close"
+    
     # 2. 使用者輸入開始與結束日期
     start_date_input = input("請輸入開始日期(YYYY-MM-DD): ").strip()
     end_date_input = input("請輸入結束日期(YYYY-MM-DD): ").strip()
@@ -42,8 +43,8 @@ def main():
 
     # 6. 整理成 CSV 格式
     df = pd.DataFrame({
-        "股票名": ticker_input,
-        "公司名": company_name,
+        "股票代碼": [ticker_input] * len(hist),
+        "公司名稱": [company_name] * len(hist),
         "股價": hist[price].values,
         "日期": hist.index.strftime("%Y-%m-%d")
     })
