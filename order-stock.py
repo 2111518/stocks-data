@@ -52,8 +52,8 @@ def main():
     price_lower = price.lower()
     filename = f"{code}-{price_lower}-{start_date_input}-{end_date_input}.csv"
     df.to_csv(filename, index=False)
-    print(f"V 資料已保存")
-    # print(f"V 資料已保存至 {filename}")
+    print("V 資料已保存")
+    # print("V 資料已保存至 {filename}")
 
 if __name__ == "__main__":
     main()

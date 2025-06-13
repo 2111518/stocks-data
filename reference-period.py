@@ -33,7 +33,7 @@ def fetch_prices_by_range(tickers_info: list[tuple[str, str, str]], start_date: 
         start_obj = datetime.strptime(start_date, "%Y-%m-%d")
         end_obj = datetime.strptime(end_date, "%Y-%m-%d")
     except ValueError:
-        print(f"X 日期格式錯誤，請使用 YYYY-MM-DD")
+        print("X 日期格式錯誤，請使用 YYYY-MM-DD")
         return pd.DataFrame()
 
     tickers = [t[0] for t in tickers_info]
